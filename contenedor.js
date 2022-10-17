@@ -65,7 +65,7 @@ class Contenedor {
                     } else {
                         /* si ya tiene algun producto, se le asigna el nro de id que siga */
                         let ultimoId = data[data.length - 1].id;
-                        producto = { id: ultimoId++, ...producto };
+                        producto = { id: ultimoId + 1, ...producto };
                     }
                     data.push(producto);
                     console.log(`Se esta agregando el producto a la lista`);
@@ -84,3 +84,4 @@ class Contenedor {
 }
 
 const productos = new Contenedor("./productos.json");
+productos.save({ name: "prueba", precio: 200 });
