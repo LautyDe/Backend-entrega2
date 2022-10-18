@@ -7,12 +7,10 @@ class Contenedor {
 
     exists(archivo) {
         /* verifico si existe el archivo */
-        console.log(`Buscando archivo...`);
         try {
             if (!fs.existsSync(archivo)) {
                 throw new Error("El archivo no existe");
             } else {
-                console.log(`Archivo ${archivo} encontrado`);
                 return true;
             }
         } catch (error) {
@@ -21,11 +19,9 @@ class Contenedor {
     }
 
     async readFile(archivo) {
-        console.log(`Leyendo archivo...`);
         try {
             /* leo el archivo */
             const data = await fs.readFileSync(archivo);
-            console.log(`Archivo leido con exito: ${data}`);
             return JSON.parse(data);
         } catch (error) {
             console.log(`Error leyendo el archivo: ${error.message}`);
@@ -33,11 +29,9 @@ class Contenedor {
     }
 
     async writeFile(archivo, contenido) {
-        console.log(`Escribiendo archivo...`);
         try {
             /* escribir archivo */
             await fs.writeFileSync(archivo, JSON.stringify(contenido, null, 4));
-            console.log(`Archivo escrito con exito`);
         } catch (error) {
             console.log(`Error escribiendo el archivo: ${error.message}`);
         }
@@ -60,6 +54,7 @@ class Contenedor {
             } else {
                 /* si el archivo existe, primero verifico si esta vacio */
                 if (this.readFile(this.archivo)) {
+                    console.log(`Leyendo archivo...`);
                     const data = await this.readFile(this.archivo);
                     if (data.length === 0) {
                         /* Si el archivo esta vacio le asigno el id: 1 */
@@ -69,8 +64,9 @@ class Contenedor {
                         let ultimoId = data[data.length - 1].id;
                         producto = { id: ultimoId + 1, ...producto };
                     }
+                    console.log(`Agregando producto al archivo...`);
                     data.push(producto);
-                    console.log(`Se esta agregando el producto a la lista`);
+
                     /* se escribe el producto */
                     this.writeFile(this.archivo, data);
                     console.log(
@@ -166,5 +162,3 @@ class Contenedor {
 
 const productos = new Contenedor("./productos.json");
 productos.save({ title: "prueba", price: 200 });
-productos.getById(2);
-productos.getAll();
