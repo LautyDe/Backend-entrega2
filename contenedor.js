@@ -66,7 +66,6 @@ class Contenedor {
                     }
                     console.log(`Agregando producto al archivo...`);
                     data.push(producto);
-
                     /* se escribe el producto */
                     this.writeFile(this.archivo, data);
                     console.log(
@@ -108,7 +107,8 @@ class Contenedor {
             const data = await this.readFile(this.archivo);
             /* una vez que verifico si existe, veo si esta vacio o tiene contenido */
             if (data.length !== 0) {
-                console.log(`Archivo leido con exito`);
+                console.log(`Archivo con contenido:`);
+                console.log(data);
                 return data;
             } else {
                 throw new Error(`El archivo ${this.archivo} esta vacio`);
@@ -148,7 +148,7 @@ class Contenedor {
             /* chequeo si existe el documento */
             let nuevoArray = [];
             console.log(`Borrando datos...`);
-            await this.readFile(this.archivo, nuevoArray);
+            await this.writeFile(this.archivo, nuevoArray);
             console.log(
                 `Se borraron todos los datos del archivo ${this.archivo}`
             );
@@ -161,4 +161,8 @@ class Contenedor {
 }
 
 const productos = new Contenedor("./productos.json");
-productos.save({ title: "prueba", price: 200 });
+productos.save({ title: prueba, price: 150 });
+productos.getById(2);
+productos.getAll();
+productos.deleteById(4);
+productos.deleteAll();
