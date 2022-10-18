@@ -119,6 +119,33 @@ class Contenedor {
             }
         }
     }
+
+    async deleteById(id) {
+        /* chequeo si existe el documento */
+        try {
+            if (this.exists(this.archivo)) {
+                const data = await this.readFile(this.archivo);
+                /* verifico que exista el id */
+                console.log(`Buscando producto con el id solicitado...`);
+                if (data.some(item => item.id === id)) {
+                    const data = await this.readFile(this.archivo);
+                    /* elimino producto */
+                    console.log(`Eliminando producto con id solicitado...`);
+                    const datos = data.filter(item => item.id !== id);
+                    this.writeFile(this.archivo, datos);
+                    console.log(`Producto con el id ${id} eliminado`);
+                } else {
+                    throw new Error(
+                        `No se encontro el producto con el id ${id}`
+                    );
+                }
+            }
+        } catch (error) {
+            console.log(
+                `Ocurrio un error eliminando el producto con el id solicitado: ${error.message}`
+            );
+        }
+    }
 }
 
 const productos = new Contenedor("./productos.json");
