@@ -161,7 +161,7 @@ class Contenedor {
 }
 
 const productos = new Contenedor("./productos.json");
-productos.save({ title: prueba, price: 150 });
+productos.save({ title: "prueba", price: 150 });
 productos.getById(2);
 productos.getAll();
 productos.deleteById(4);
