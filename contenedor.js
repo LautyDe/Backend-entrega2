@@ -7,6 +7,7 @@ class Contenedor {
 
     exists(archivo) {
         /* verifico si existe el archivo */
+        console.log(`Buscando archivo...`);
         try {
             if (!fs.existsSync(archivo)) {
                 throw new Error("El archivo no existe");
@@ -15,13 +16,12 @@ class Contenedor {
                 return true;
             }
         } catch (error) {
-            console.log(
-                `Error verificando si existe el archivo: ${error.message}`
-            );
+            console.log(`Error buscando el archivo: ${error.message}`);
         }
     }
 
     async readFile(archivo) {
+        console.log(`Leyendo archivo...`);
         try {
             /* leo el archivo */
             const data = await fs.readFileSync(archivo);
@@ -33,9 +33,11 @@ class Contenedor {
     }
 
     async writeFile(archivo, contenido) {
-        /* escribir archivo */
+        console.log(`Escribiendo archivo...`);
         try {
+            /* escribir archivo */
             await fs.writeFileSync(archivo, JSON.stringify(contenido, null, 4));
+            console.log(`Archivo escrito con exito`);
         } catch (error) {
             console.log(`Error escribiendo el archivo: ${error.message}`);
         }
@@ -79,6 +81,42 @@ class Contenedor {
             }
         } catch (error) {
             console.log(`Error agregando el producto: ${error.message}`);
+        }
+    }
+
+    async getById(id) {
+        try {
+            /* chequeo que exista el documento */
+            if (this.exists(this.archivo)) {
+                const data = await this.readFile(this.archivo);
+                /* uso filter para buscar el producto con el id que queramos */
+                const dataId = data.filter(item => item.id === id);
+                if (dataId.length === 0) {
+                    throw new Error(
+                        "No se encontro un producto con el id solicitado"
+                    );
+                } else {
+                    console.log(`Producto con id ${id} encontrado:\n`, dataId);
+                    return dataId;
+                }
+            }
+        } catch (error) {
+            console.log(`Error buscando producto con el id: ${error.message}`);
+        }
+    }
+
+    async getAll() {
+        /* chequeo si existe el documento */
+        if (this.exists(this.archivo)) {
+            console.log(`Leyendo archivo...`);
+            const data = await this.readFile(this.archivo);
+            /* una vez que verifico si existe, veo si esta vacio o tiene contenido */
+            if (data.length !== 0) {
+                console.log(`Archivo leido con exito`);
+                return data;
+            } else {
+                throw new Error(`El archivo ${this.archivo} esta vacio`);
+            }
         }
     }
 }
