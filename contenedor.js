@@ -146,6 +146,22 @@ class Contenedor {
             );
         }
     }
+
+    async deleteAll() {
+        try {
+            /* chequeo si existe el documento */
+            let nuevoArray = [];
+            console.log(`Borrando datos...`);
+            await this.readFile(this.archivo, nuevoArray);
+            console.log(
+                `Se borraron todos los datos del archivo ${this.archivo}`
+            );
+        } catch (error) {
+            console.log(
+                `Ocurrio un error eliminando los datos: ${error.message}`
+            );
+        }
+    }
 }
 
 const productos = new Contenedor("./productos.json");
