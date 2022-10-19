@@ -102,17 +102,23 @@ class Contenedor {
 
     async getAll() {
         /* chequeo si existe el documento */
-        if (this.exists(this.archivo)) {
-            console.log(`Leyendo archivo...`);
-            const data = await this.readFile(this.archivo);
-            /* una vez que verifico si existe, veo si esta vacio o tiene contenido */
-            if (data.length !== 0) {
-                console.log(`Archivo con contenido:`);
-                console.log(data);
-                return data;
-            } else {
-                throw new Error(`El archivo ${this.archivo} esta vacio`);
+        try {
+            if (this.exists(this.archivo)) {
+                console.log(`Leyendo archivo...`);
+                const data = await this.readFile(this.archivo);
+                /* una vez que verifico si existe, veo si esta vacio o tiene contenido */
+                if (data.length !== 0) {
+                    console.log(`Archivo con contenido:`);
+                    console.log(data);
+                    return data;
+                } else {
+                    throw new Error(`El archivo ${this.archivo} esta vacio`);
+                }
             }
+        } catch (error) {
+            console.log(
+                `Error obteniendo todos los productos: ${error.message}`
+            );
         }
     }
 
